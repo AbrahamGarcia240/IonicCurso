@@ -1,0 +1,84 @@
+DIA 1 **************************************************************************************
+
+Crear un proyecto en angular:
+ng new <nombre_proyecto>
+
+Levantar el servidor del projecto
+ng serve
+
+Crear un componente
+ng g c components/<nombre del componente>
+
+	La etiqueta del componente se pone en el app.component
+	
+	La etiqueta del`componente la encuentras en <nombre_del_componente>.components.ts
+	con el nombre de "selector"
+
+
+Las variables se crean dentro del <nombre_del_componente>.components.ts antes del
+constructor, ejemplo:
+nombre:string = "Abraham garcia"
+Para mostrarlas en el html uso {{ nombre }}
+Puedo aplicarle metodos a la variable, como por ejemplo: {{ nombre | uppercase}}
+
+Puedo cachar eventos, como por ejemplo el click de un boton, mediante:
+<button type="button" class="btn btn-primary" (click)="HACERFUNCION()">Cambiar</button>
+
+La funcion HACERFUNCION() la defino dentro del objeto que esta en <nombre_del_componente>.components.ts
+
+
+Para enlazar los valores a una caja de texto uso:
+<input type="text" class="form-control" placeholder="Esciba un nombre" [(ngModel)]="nombre">
+para que funcione, agregar al app.module.ts
+
+import { FormsModule } from '@angular/forms';
+
+y dentro de la seccion de imports:
+FormsModule
+
+
+Para habilitar y deshabilitar una propiedad de una etiqueta, uso
+<button type="button" class="btn btn-primary" (click)="cambiar_nombre()" [disabled]="nombre.length==0">Cambiar nombre</button>
+
+Donde, [disabled]="nombre.length==0" solo se cumple si la operacion de adentro es true
+
+
+SI tengo una variable llamada "existo", puedo usarla para mostrar o ocular una etiqueta:
+<h1 *ngIf="existo">Existo!!</h1>
+<h1 *ngIf="!existo">No existo!</h1>
+
+Si tengo un arreglo llamado "mutantes" puedo usarlo para imprimir contenido dinamico:
+    <li class="list-group-item" *ngFor="let mutante of mutantes; let i= index">{{i+1}}.- {{ mutante }}</li>
+
+
+DIA 2 **************************************************************************************
+
+Un servicio es una forma de compartir datos entre componentes, para crearlo
+ng g s services/<nombre>
+
+Despues hay que importarlo en el app.module
+import {<Nombre del constructor en <nombre>.service>} from 'services/<nombre>.service
+
+Despues agregarlo enla seccion de providers del mismo app.module'
+ providers: [
+    <Nombre del constructor en <nombre>.service>
+  ],
+
+Tambien tengo que hacer el import en el componente donde lo vaya a usar
+
+Luego, para ejecutarlo, puedo añadirlo como parametro en el constructor del componente, ejemplo:
+
+constructor( private _ms:MutantesService ) {
+    
+  }
+
+En lugar de usar Http, hay que usar:
+
+HttpClientModule en el app.module.ts
+import { HttpClientModule } from '@angular/common/http';
+
+y import { HttpClient } from '@angular/common/http'; en el mutante.service.ts
+
+En el html puedo imprimir el contenido del json como:
+
+{{ _<nombreDeLaInstanciaDelServicio>.<nombreDelArray> | json }}
